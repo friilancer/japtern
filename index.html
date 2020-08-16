@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Node App</title>
+</head>
+<body>
+	<textarea id="text" placeholder="scribble..."></textarea><br />
+	<button id="submit" style="padding: 10px">Submit</button>
+	<div id="root"></div>
+
+
+	<script type="text/javascript">
+		document.getElementById('submit').onclick = () => {
+			let text = document.getElementById('text').value.trim().toString();
+
+			if(text.length == 0){
+				document.getElementById('root').textContent = 'Please type in some text';
+				return ;
+			} else {
+				let payload = {
+				headers : {
+					'content-type' : 'application/json'
+				},
+				body: JSON.stringify({text}),
+				method: 'POST'
+				}
+
+				fetch('/', payload)
+					.then((res) => res.json())
+					.then((data) => {
+						document.getElementById('text').value = '';
+						document.getElementById('root').textContent = data.result;
+					})
+					.catch((err) => {
+						document.getElementById('root').textContent = "Text wasn't recieved";
+					})
+			}
+
+			
+		}
+	</script>
+</body>
+</html>
